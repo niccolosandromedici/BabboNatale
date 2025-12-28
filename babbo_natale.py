@@ -78,7 +78,8 @@ class BabboNatale(arcade.Window):
     
     def on_draw(self):
         self.clear()
-        arcade.draw_texture_rect(self.background, arcade.XYWH( 0, 0, 600, 600) )
+        #arcade.draw_texture_rect(self.background, arcade.LBWH( 0, 0, 300, 168) )
+        arcade.draw_texture_rect(self.background, arcade.types.Viewport( 0, 0, 900, 600) )
         self.lista_cookie.draw()
         self.lista_babbo.draw()
 
@@ -157,7 +158,7 @@ class BabboNatale(arcade.Window):
             self.right_pressed = False
 
 def main():
-    gioco = BabboNatale(600, 600, "Babbo Natale")
+    gioco = BabboNatale(900, 600, "Babbo Natale")
     arcade.run()
 
 if __name__ == "__main__":
