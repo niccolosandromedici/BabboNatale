@@ -38,7 +38,8 @@ class BabboNatale(arcade.Window):
         self.cookie = None
         self.lista_babbo = arcade.SpriteList()
         self.lista_cookie = arcade.SpriteList()
-        self.suono_munch = arcade.load_sound("./assets/munch.mp3")
+        self.suono_munch = arcade.load_sound("./assets/munch.mp3") 
+        self.background = arcade.load_texture("chalet.jpg")
         
         self.up_pressed = False
         self.down_pressed = False
@@ -64,11 +65,15 @@ class BabboNatale(arcade.Window):
         self.cookie.center_y = random.randint(50, 550)
         self.cookie.scale = 0.2
         self.lista_cookie.append(self.cookie)
+
+    
+        
     
     def on_draw(self):
         self.clear()
         self.lista_cookie.draw()
         self.lista_babbo.draw()
+        arcade.draw(0, 0, 600, 600, self.background)
     
     def on_update(self, delta_time):
         # Calcola movimento in base ai tasti premuti
