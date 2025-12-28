@@ -40,7 +40,7 @@ class BabboNatale(arcade.Window):
         self.lista_babbo = arcade.SpriteList()
         self.lista_cookie = arcade.SpriteList()
         self.suono_munch = arcade.load_sound("./assets/munch.mp3") 
-        
+        i = 0
 
         file_path = os.path.dirname(os.path.abspath(__file__))
         os.chdir(file_path)
@@ -130,6 +130,7 @@ class BabboNatale(arcade.Window):
             arcade.play_sound(self.suono_munch)
             for cookie in collisioni:
                 cookie.remove_from_sprite_lists()
+                i += 1
             self.crea_cookie() # creo un altro biscotto
     
     def on_key_press(self, tasto, modificatori):
