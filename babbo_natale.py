@@ -39,7 +39,7 @@ class BabboNatale(arcade.Window):
         self.lista_babbo = arcade.SpriteList()
         self.lista_cookie = arcade.SpriteList()
         self.suono_munch = arcade.load_sound("./assets/munch.mp3") 
-        self.background = arcade.load_texture("./assets/chalet.jpg")
+        #self.background = arcade.load_texture("./assets/chalet.jpg")
         
         self.up_pressed = False
         self.down_pressed = False
@@ -71,7 +71,7 @@ class BabboNatale(arcade.Window):
     
     def on_draw(self):
         self.clear()
-        self.background.draw()
+        #self.background.draw()
         self.lista_cookie.draw()
         self.lista_babbo.draw()
         
@@ -129,6 +129,8 @@ class BabboNatale(arcade.Window):
             self.left_pressed = True
         elif tasto in (arcade.key.RIGHT, arcade.key.D):
             self.right_pressed = True
+        elif tasto == arcade.key.M:
+            self.suono_munch.set_volume("0")
     
     def on_key_release(self, tasto, modificatori):
         """Gestisce il rilascio dei tasti"""
