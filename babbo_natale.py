@@ -1,5 +1,6 @@
 import arcade
 import random
+import os
 
 
 
@@ -39,8 +40,11 @@ class BabboNatale(arcade.Window):
         self.lista_babbo = arcade.SpriteList()
         self.lista_cookie = arcade.SpriteList()
         self.suono_munch = arcade.load_sound("./assets/munch.mp3") 
-        #self.background = arcade.load_texture("./assets/chalet.jpg")
         
+
+        file_path = os.path.dirname(os.path.abspath(__file__))
+        os.chdir(file_path)
+
         self.up_pressed = False
         self.down_pressed = False
         self.left_pressed = False
@@ -58,7 +62,10 @@ class BabboNatale(arcade.Window):
         self.lista_babbo.append(self.babbo)
         
         self.crea_cookie()
-    
+
+
+        self.background = arcade.load_texture("assets/chalet.jpg")
+
     def crea_cookie(self):
         self.cookie = arcade.Sprite("./assets/cookie.png")
         self.cookie.center_x = random.randint(50, 550)
@@ -71,11 +78,15 @@ class BabboNatale(arcade.Window):
     
     def on_draw(self):
         self.clear()
-        #self.background.draw()
+        arcade.draw_texture_rect(self.background, arcade.XYWH( 0, 0, 600, 600) )
         self.lista_cookie.draw()
         self.lista_babbo.draw()
+
+        
         
     
+
+
     def on_update(self, delta_time):
         # Calcola movimento in base ai tasti premuti
         change_x = 0
@@ -130,7 +141,9 @@ class BabboNatale(arcade.Window):
         elif tasto in (arcade.key.RIGHT, arcade.key.D):
             self.right_pressed = True
         elif tasto == arcade.key.M:
-            self.suono_munch.set_volume("0")
+            self.suono_munch.set_volume("0", )
+        elif tasto == arcade.key.M:
+            self.suono_munch.set_volume("1", )
     
     def on_key_release(self, tasto, modificatori):
         """Gestisce il rilascio dei tasti"""
