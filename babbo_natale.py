@@ -71,9 +71,10 @@ class BabboNatale(arcade.Window):
     
     def on_draw(self):
         self.clear()
+        arcade.draw(0, 0, 600, 600, self.background)
         self.lista_cookie.draw()
         self.lista_babbo.draw()
-        arcade.draw(0, 0, 600, 600, self.background)
+        
     
     def on_update(self, delta_time):
         # Calcola movimento in base ai tasti premuti
