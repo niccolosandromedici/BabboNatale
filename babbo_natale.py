@@ -8,12 +8,12 @@ import os
 Compiti per casa: La scorpacciata di Babbo Natale
 Dato questo giochino come partenza, aggiungere le seguenti modifiche:
 1 - Scaricare, disegnare o generare con AI un'immagine di sfondo
-     e mostrarla poi come background
+     e mostrarla poi come background                                                        #fatto
 2 - Premendo il tasto "M", il suono verrà mutato. Premendolo di nuovo
      il suono deve tornare. Avete due possibilità: o evitate proprio
      di far partire il suono, o vi guardate come funziona play_sound
      e vedete se c'è qualcosa che vi può essere utile
-3 - Contate quanti biscotti vengono raccolti, salvatelo in una variabile
+3 - Contate quanti biscotti vengono raccolti, salvatelo in una variabile                    #fatto
 4 - Mostrate con draw_text il punteggio (numero di biscotti raccolti)
 5 - Fate in modo che il nuovo biscotto venga sempre creato almeno a 100 pixel
     di distanza rispetto al giocatore
@@ -39,8 +39,9 @@ class BabboNatale(arcade.Window):
         self.cookie = None
         self.lista_babbo = arcade.SpriteList()
         self.lista_cookie = arcade.SpriteList()
-        self.suono_munch = arcade.load_sound("./assets/munch.mp3") 
-        i = 0
+        self.suono_munch = arcade.load_sound("./assets/munch.mp3")
+
+        self.i = 0
 
         file_path = os.path.dirname(os.path.abspath(__file__))
         os.chdir(file_path)
@@ -51,9 +52,14 @@ class BabboNatale(arcade.Window):
         self.right_pressed = False
         
         self.velocita = 4
+
+        self.testo_score = None
         
         self.setup()
     
+
+
+
     def setup(self):
         self.babbo = arcade.Sprite("./assets/babbo.png")
         self.babbo.center_x = 300
@@ -63,8 +69,17 @@ class BabboNatale(arcade.Window):
         
         self.crea_cookie()
 
-
         self.background = arcade.load_texture("assets/chalet.jpg")
+
+        self.testo_score = arcade.Text(
+            text="Punteggio: " + str(self.i),
+            x = 400, # Centro dello schermo
+            y = 550, # Vicino in alto
+            color = arcade.color.WHITE,
+            font_size = 24,
+            font_name = "Arial", # O il nome del tuo font caricato
+            anchor_x = "center" # Allinea il testo al centro
+        )
 
     def crea_cookie(self):
         self.cookie = arcade.Sprite("./assets/cookie.png")
@@ -82,9 +97,10 @@ class BabboNatale(arcade.Window):
         arcade.draw_texture_rect(self.background, arcade.types.Viewport( 0, 0, 900, 600) )
         self.lista_cookie.draw()
         self.lista_babbo.draw()
-
+        self.testo_score.draw()
         
-        
+    
+    
     
 
 
@@ -130,7 +146,7 @@ class BabboNatale(arcade.Window):
             arcade.play_sound(self.suono_munch)
             for cookie in collisioni:
                 cookie.remove_from_sprite_lists()
-                i += 1
+                self.i += 1
             self.crea_cookie() # creo un altro biscotto
     
     def on_key_press(self, tasto, modificatori):
@@ -157,6 +173,10 @@ class BabboNatale(arcade.Window):
             self.left_pressed = False
         elif tasto in (arcade.key.RIGHT, arcade.key.D):
             self.right_pressed = False
+
+
+    def aggiorna_punteggio(self, nuovo_punteggio):
+        self.testo_score.text = f"Punteggio: {self.i}"
 
 def main():
     gioco = BabboNatale(900, 600, "Babbo Natale")
