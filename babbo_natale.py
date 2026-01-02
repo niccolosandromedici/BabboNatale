@@ -14,7 +14,7 @@ Dato questo giochino come partenza, aggiungere le seguenti modifiche:
      di far partire il suono, o vi guardate come funziona play_sound
      e vedete se c'è qualcosa che vi può essere utile
 3 - Contate quanti biscotti vengono raccolti, salvatelo in una variabile                    #fatto
-4 - Mostrate con draw_text il punteggio (numero di biscotti raccolti)                       #quasi fatto
+4 - Mostrate con draw_text il punteggio (numero di biscotti raccolti)                       #fatto
 5 - Fate in modo che il nuovo biscotto venga sempre creato almeno a 100 pixel
     di distanza rispetto al giocatore
 
@@ -83,8 +83,8 @@ class BabboNatale(arcade.Window):
 
     def crea_cookie(self):
         self.cookie = arcade.Sprite("./assets/cookie.png")
-        self.cookie.center_x = random.randint(50, 550)
-        self.cookie.center_y = random.randint(50, 550)
+        self.cookie.center_x = (self.babbo.center_x + random.randint(100, 800))%900
+        self.cookie.center_y = (self.babbo.center_y + random.randint(100, 500))%600
         self.cookie.scale = 0.2
         self.lista_cookie.append(self.cookie)
 
