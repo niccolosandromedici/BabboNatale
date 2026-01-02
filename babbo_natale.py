@@ -33,6 +33,16 @@ Dato questo giochino come partenza, aggiungere le seguenti modifiche:
 Fate questo esercizio in una repository su git e mandate il link al vostro account sul form
 """
 class BabboNatale(arcade.Window):
+
+
+    COOKIE_HEIGHT = 32
+    COOKIE_WIDTH = 32
+    SCREEN_HEIGHT = 600
+    SCREEN_WIDTH = 900
+
+
+
+
     def __init__(self, larghezza, altezza, titolo):
         super().__init__(larghezza, altezza, titolo)
         self.babbo = None
@@ -54,7 +64,8 @@ class BabboNatale(arcade.Window):
         self.velocita = 4
 
         self.testo_score = None
-        
+      
+       
         self.setup()
     
 
@@ -62,8 +73,8 @@ class BabboNatale(arcade.Window):
 
     def setup(self):
         self.babbo = arcade.Sprite("./assets/babbo.png")
-        self.babbo.center_x = 300
-        self.babbo.center_y = 100
+        self.babbo.center_x = BabboNatale.SCREEN_WIDTH // 2
+        self.babbo.center_y = BabboNatale.SCREEN_HEIGHT // 2
         self.babbo.scale = 1.0
         self.lista_babbo.append(self.babbo)
         
@@ -73,8 +84,8 @@ class BabboNatale(arcade.Window):
 
         self.testo_score = arcade.Text( #testo del punteggio
             text="Punteggio: " + str(self.i),
-            x = 400, # Centro dello schermo
-            y = 550, # Vicino in alto
+            x = BabboNatale.SCREEN_WIDTH // 2, # Centro dello schermo
+            y = BabboNatale.SCREEN_HEIGHT - 50, # Vicino in alto
             color = arcade.color.WHITE,
             font_size = 24,
             font_name = "Arial", # O il nome del tuo font caricato
@@ -85,15 +96,15 @@ class BabboNatale(arcade.Window):
         next_x = self.babbo.center_x
 
         while abs(next_x - self.babbo.center_x) < 100 :
-            next_x = 16 + (self.babbo.center_x + random.randint(100, (900-32)))%(900 - 32)
+            next_x = (BabboNatale.COOKIE_WIDTH/2) + (self.babbo.center_x + random.randint(100, (BabboNatale.SCREEN_WIDTH - BabboNatale.COOKIE_WIDTH)))%(BabboNatale.SCREEN_WIDTH - BabboNatale.COOKIE_WIDTH)
 
 
         next_y = self.babbo.center_y
 
         while abs(next_y - self.babbo.center_y) < 100 :
-            next_y = 16 + (self.babbo.center_y + random.randint(100, (600-32)))%(600 - 32)
+            next_y = (BabboNatale.COOKIE_HEIGHT/2) + (self.babbo.center_y + random.randint(100, (BabboNatale.SCREEN_HEIGHT - BabboNatale.COOKIE_HEIGHT)))%(BabboNatale.SCREEN_HEIGHT - BabboNatale.COOKIE_HEIGHT)
         
-        print("[",self.babbo.center_x,"][", self.babbo.center_y,"] = > Cookie creato in: [",next_x, "] [", next_y, "]")
+        #print("[",self.babbo.center_x,"][", self.babbo.center_y,"] = > Cookie creato in: [",next_x, "] [", next_y, "]")
 
         self.cookie = arcade.Sprite("./assets/cookie.png")
         
@@ -108,7 +119,7 @@ class BabboNatale(arcade.Window):
     def on_draw(self):
         self.clear()
         #arcade.draw_texture_rect(self.background, arcade.LBWH( 0, 0, 300, 168) )
-        arcade.draw_texture_rect(self.background, arcade.types.Viewport( 0, 0, 900, 600) )
+        arcade.draw_texture_rect(self.background, arcade.types.Viewport( 0, 0, BabboNatale.SCREEN_WIDTH, BabboNatale.SCREEN_HEIGHT) )
         self.lista_cookie.draw()
         self.lista_babbo.draw()
         self.testo_score.draw()
@@ -194,7 +205,7 @@ class BabboNatale(arcade.Window):
         self.testo_score.text = f"Punteggio: {self.i}"
 
 def main():
-    gioco = BabboNatale(900, 600, "Babbo Natale")
+    gioco = BabboNatale(BabboNatale.SCREEN_WIDTH, BabboNatale.SCREEN_HEIGHT, "Babbo Natale")
     arcade.run()
 
 if __name__ == "__main__":
