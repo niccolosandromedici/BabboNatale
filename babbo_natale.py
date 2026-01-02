@@ -82,9 +82,23 @@ class BabboNatale(arcade.Window):
         )
 
     def crea_cookie(self):
+        next_x = self.babbo.center_x
+
+        while abs(next_x - self.babbo.center_x) < 100 :
+            next_x = 16 + (self.babbo.center_x + random.randint(100, (900-32)))%(900 - 32)
+
+
+        next_y = self.babbo.center_y
+
+        while abs(next_y - self.babbo.center_y) < 100 :
+            next_y = 16 + (self.babbo.center_y + random.randint(100, (600-32)))%(600 - 32)
+        
+        print("[",self.babbo.center_x,"][", self.babbo.center_y,"] = > Cookie creato in: [",next_x, "] [", next_y, "]")
+
         self.cookie = arcade.Sprite("./assets/cookie.png")
-        self.cookie.center_x = (self.babbo.center_x + random.randint(100, 800))%900
-        self.cookie.center_y = (self.babbo.center_y + random.randint(100, 500))%600
+        
+        self.cookie.center_x = next_x
+        self.cookie.center_y = next_y
         self.cookie.scale = 0.2
         self.lista_cookie.append(self.cookie)
 
