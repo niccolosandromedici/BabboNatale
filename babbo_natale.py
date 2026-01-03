@@ -9,16 +9,16 @@ Compiti per casa: La scorpacciata di Babbo Natale
 Dato questo giochino come partenza, aggiungere le seguenti modifiche:
 1 - Scaricare, disegnare o generare con AI un'immagine di sfondo
      e mostrarla poi come background                                                        #fatto
-2 - Premendo il tasto "M", il suono verrà mutato. Premendolo di nuovo
+2 - Premendo il tasto "M", il suono verrà mutato. Premendolo di nuovo                       #da finire
      il suono deve tornare. Avete due possibilità: o evitate proprio
      di far partire il suono, o vi guardate come funziona play_sound
      e vedete se c'è qualcosa che vi può essere utile
 3 - Contate quanti biscotti vengono raccolti, salvatelo in una variabile                    #fatto
 4 - Mostrate con draw_text il punteggio (numero di biscotti raccolti)                       #fatto
-5 - Fate in modo che il nuovo biscotto venga sempre creato almeno a 100 pixel
+5 - Fate in modo che il nuovo biscotto venga sempre creato almeno a 100 pixel               #fatto
     di distanza rispetto al giocatore
 
-6 - Ogni volta che babbo natale mangia 5 biscotti, dalla prossima volta
+6 - Ogni volta che babbo natale mangia 5 biscotti, dalla prossima volta                        #da fare
     in  poi verranno creati 2 biscotti per volta. Dopo averne mangiati
     altri 5, vengono creati 3 biscotti per volta, poi 4, e via dicendo
 
