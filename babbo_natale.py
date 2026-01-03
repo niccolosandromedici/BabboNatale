@@ -185,10 +185,14 @@ class BabboNatale(arcade.Window):
         elif tasto in (arcade.key.RIGHT, arcade.key.D):
             self.right_pressed = True
         elif tasto == arcade.key.M:
-            self.suono_munch.set_volume("0", )
-        elif tasto == arcade.key.M:
-            self.suono_munch.set_volume("1", )
-    
+            if self.suono_munch.get_volume() == 0:
+                self.suono_munch.set_volume(1, self.lista_cookie)
+            
+            else:
+                self.suono_munch.set_volume(0, self.lista_cookie)
+
+        
+
     def on_key_release(self, tasto, modificatori):
         """Gestisce il rilascio dei tasti"""
         if tasto in (arcade.key.UP, arcade.key.W):
@@ -199,6 +203,9 @@ class BabboNatale(arcade.Window):
             self.left_pressed = False
         elif tasto in (arcade.key.RIGHT, arcade.key.D):
             self.right_pressed = False
+
+
+    
 
 
     def aggiorna_punteggio(self, nuovo_punteggio):
