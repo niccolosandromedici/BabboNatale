@@ -94,7 +94,7 @@ class BabboNatale(arcade.Window):
 
     def crea_cookie(self):
 
-        print("[" + str(self.i) + "] == > Creazione cookie...")
+        #print("[" + str(self.i) + "] == > Creazione cookie...")
 
 
         next_x = self.babbo.center_x
@@ -184,12 +184,12 @@ class BabboNatale(arcade.Window):
             
        
     def crea_biscotti(self):
-        print("chiamato crea biscotti")      
-        x = self.i % 5
+        #print("chiamato crea biscotti")      
+        x = 1 + (self.i // 5)
         while x > 0:
-            print("dentro il while")
+            #print("dentro il while")
             self.crea_cookie()
-            x -= 1 
+            x -= 1
 
 
     def on_key_press(self, tasto, modificatori):
