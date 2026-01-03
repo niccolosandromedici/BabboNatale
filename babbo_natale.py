@@ -93,6 +93,10 @@ class BabboNatale(arcade.Window):
         )
 
     def crea_cookie(self):
+
+        print("[" + str(self.i) + "] == > Creazione cookie...")
+
+
         next_x = self.babbo.center_x
 
         while abs(next_x - self.babbo.center_x) < 100 :
@@ -111,7 +115,10 @@ class BabboNatale(arcade.Window):
         self.cookie.center_x = next_x
         self.cookie.center_y = next_y
         self.cookie.scale = 0.2
+
         self.lista_cookie.append(self.cookie)
+
+        
 
     
         
@@ -173,8 +180,18 @@ class BabboNatale(arcade.Window):
                 self.i += 1
                 self.testo_score.text = f"Punteggio: {self.i}"
                 cookie.remove_from_sprite_lists()
-            self.crea_cookie() # creo un altro biscotto
-    
+            self.crea_biscotti()
+            
+       
+    def crea_biscotti(self):
+        print("chiamato crea biscotti")      
+        x = self.i % 5
+        while x > 0:
+            print("dentro il while")
+            self.crea_cookie()
+            x -= 1 
+
+
     def on_key_press(self, tasto, modificatori):
         if tasto in (arcade.key.UP, arcade.key.W):
             self.up_pressed = True
@@ -187,7 +204,6 @@ class BabboNatale(arcade.Window):
         elif tasto == arcade.key.M:
             if self.suono_munch.get_volume() == 0:
                 self.suono_munch.set_volume(1, self.lista_cookie)
-            
             else:
                 self.suono_munch.set_volume(0, self.lista_cookie)
 
