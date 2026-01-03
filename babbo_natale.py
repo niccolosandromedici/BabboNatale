@@ -9,7 +9,7 @@ Compiti per casa: La scorpacciata di Babbo Natale
 Dato questo giochino come partenza, aggiungere le seguenti modifiche:
 1 - Scaricare, disegnare o generare con AI un'immagine di sfondo
      e mostrarla poi come background                                                        #fatto
-2 - Premendo il tasto "M", il suono verrà mutato. Premendolo di nuovo                       #da finire
+2 - Premendo il tasto "M", il suono verrà mutato. Premendolo di nuovo                       #fatto
      il suono deve tornare. Avete due possibilità: o evitate proprio
      di far partire il suono, o vi guardate come funziona play_sound
      e vedete se c'è qualcosa che vi può essere utile
@@ -18,7 +18,7 @@ Dato questo giochino come partenza, aggiungere le seguenti modifiche:
 5 - Fate in modo che il nuovo biscotto venga sempre creato almeno a 100 pixel               #fatto
     di distanza rispetto al giocatore
 
-6 - Ogni volta che babbo natale mangia 5 biscotti, dalla prossima volta                        #da fare
+6 - Ogni volta che babbo natale mangia 5 biscotti, dalla prossima volta                     #fatto
     in  poi verranno creati 2 biscotti per volta. Dopo averne mangiati
     altri 5, vengono creati 3 biscotti per volta, poi 4, e via dicendo
 
@@ -39,7 +39,7 @@ class BabboNatale(arcade.Window):
     COOKIE_WIDTH = 32
     SCREEN_HEIGHT = 600
     SCREEN_WIDTH = 900
-
+    sound_player = None
 
 
 
@@ -50,6 +50,7 @@ class BabboNatale(arcade.Window):
         self.lista_babbo = arcade.SpriteList()
         self.lista_cookie = arcade.SpriteList()
         self.suono_munch = arcade.load_sound("./assets/munch.mp3")
+        
 
         self.i = 0  # punteggio
 
@@ -175,7 +176,12 @@ class BabboNatale(arcade.Window):
         collisioni = arcade.check_for_collision_with_list(self.babbo, self.lista_cookie)
         
         if len(collisioni) > 0: # Vuol dire che il personaggio si è scontrato con qualcosa
-            arcade.play_sound(self.suono_munch)
+            #self.sound_player = arcade.play_sound(self.suono_munch)
+            if self.sound_player == None:
+                self.sound_player = arcade.play_sound(self.suono_munch)
+            else:    
+                arcade.sound.play_sound( self.suono_munch, volume=self.suono_munch.get_volume(self.sound_player) )
+            
             for cookie in collisioni:
                 self.i += 1
                 self.testo_score.text = f"Punteggio: {self.i}"
@@ -202,10 +208,11 @@ class BabboNatale(arcade.Window):
         elif tasto in (arcade.key.RIGHT, arcade.key.D):
             self.right_pressed = True
         elif tasto == arcade.key.M:
-            if self.suono_munch.get_volume() == 0:
-                self.suono_munch.set_volume(1, self.lista_cookie)
-            else:
-                self.suono_munch.set_volume(0, self.lista_cookie)
+            if self.sound_player != None:
+                if self.suono_munch.get_volume(self.sound_player) == 0:
+                    self.suono_munch.set_volume(1.0, self.sound_player)
+                else:
+                    self.suono_munch.set_volume(0.0, self.sound_player)
 
         
 
