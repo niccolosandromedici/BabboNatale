@@ -8,21 +8,21 @@ import os
 Compiti per casa: La scorpacciata di Babbo Natale
 Dato questo giochino come partenza, aggiungere le seguenti modifiche:
 1 - Scaricare, disegnare o generare con AI un'immagine di sfondo
-     e mostrarla poi come background                                                        #fatto
-2 - Premendo il tasto "M", il suono verrà mutato. Premendolo di nuovo                       #fatto
+     e mostrarla poi come background                                                            #fatto
+2 - Premendo il tasto "M", il suono verrà mutato. Premendolo di nuovo                           #fatto
      il suono deve tornare. Avete due possibilità: o evitate proprio
      di far partire il suono, o vi guardate come funziona play_sound
      e vedete se c'è qualcosa che vi può essere utile
-3 - Contate quanti biscotti vengono raccolti, salvatelo in una variabile                    #fatto
-4 - Mostrate con draw_text il punteggio (numero di biscotti raccolti)                       #fatto
-5 - Fate in modo che il nuovo biscotto venga sempre creato almeno a 100 pixel               #fatto
+3 - Contate quanti biscotti vengono raccolti, salvatelo in una variabile                        #fatto
+4 - Mostrate con draw_text il punteggio (numero di biscotti raccolti)                           #fatto
+5 - Fate in modo che il nuovo biscotto venga sempre creato almeno a 100 pixel                   #fatto
     di distanza rispetto al giocatore
 
-6 - Ogni volta che babbo natale mangia 5 biscotti, dalla prossima volta                     #fatto
+6 - Ogni volta che babbo natale mangia 5 biscotti, dalla prossima volta                         #fatto
     in  poi verranno creati 2 biscotti per volta. Dopo averne mangiati
     altri 5, vengono creati 3 biscotti per volta, poi 4, e via dicendo
 
-7 - (Opzionale) Ogni volta che genero un biscotto, al 3% di possibilità potrebbe essere un
+7 - (Opzionale) Ogni volta che genero un biscotto, al 3% di possibilità potrebbe essere un      #bisogna fare pulizia nel codice
          "golden cookie". Il golden cookie rimane solo 3 secondi sullo schermo
         ma vale 100 punti. 
 
@@ -54,7 +54,7 @@ class BabboNatale(arcade.Window):
         self.lista_babbo = arcade.SpriteList()
         self.lista_cookie = arcade.SpriteList()
         self.suono_munch = arcade.load_sound("./assets/munch.mp3")
-        #self.Golden_cookie = arcade.SpriteList()
+        
         
 
         self.i = 0  # punteggio
@@ -103,7 +103,7 @@ class BabboNatale(arcade.Window):
 
     def crea_cookie(self, tipo):
 
-        print("[" + str(self.i) + "][" + tipo + "] == > Creazione cookie...")
+        #print("[" + str(self.i) + "][" + tipo + "] == > Creazione cookie...")
 
 
         next_x = self.babbo.center_x
@@ -137,37 +137,12 @@ class BabboNatale(arcade.Window):
             self.cookie.tipo = "golden"
             self.lista_cookie.append(self.cookie)
 
-    # def crea_golden_cookie(self):
-    #     next_gx = self.babbo.center_x
-
-    #     while abs(next_gx - self.babbo.center_x) < 100 :
-    #         next_gx = (BabboNatale.GOLDEN_COOKIE_WIDTH/2) + (self.babbo.center_x + random.randint(100, (BabboNatale.SCREEN_WIDTH - BabboNatale.GOLDEN_COOKIE_WIDTH)))%(BabboNatale.SCREEN_WIDTH - BabboNatale.GOLDEN_COOKIE_WIDTH)
-
-
-    #     next_gy = self.babbo.center_y
-
-    #     while abs(next_gy - self.babbo.center_y) < 100 :
-    #         next_gy = (BabboNatale.GOLDEN_COOKIE_HEIGHT/2) + (self.babbo.center_y + random.randint(100, (BabboNatale.SCREEN_HEIGHT - BabboNatale.GOLDEN_COOKIE_HEIGHT)))%(BabboNatale.SCREEN_HEIGHT - BabboNatale.GOLDEN_COOKIE_HEIGHT)
-        
-    #     #print("[",self.babbo.center_x,"][", self.babbo.center_y,"] = > Cookie creato in: [",next_x, "] [", next_y, "]")
-
-    #     self.Golden_cookie = arcade.Sprite("./assets/golden_cookie.png")
-        
-    #     self.Golden_cookie.center_x = next_gx
-    #     self.Golden_cookie.center_y = next_gy
-    #     self.Golden_cookie.scale = 0.2
-    #     self.Golden_cookie.tipo = "golden"
-    #     self.lista_cookie.append(self.Golden_cookie)
-
-
-        
-
     
+
         
     
     def on_draw(self):
         self.clear()
-        #arcade.draw_texture_rect(self.background, arcade.LBWH( 0, 0, 300, 168) )
         arcade.draw_texture_rect(self.background, arcade.types.Viewport( 0, 0, BabboNatale.SCREEN_WIDTH, BabboNatale.SCREEN_HEIGHT) )
         self.lista_cookie.draw()
         self.lista_babbo.draw()
@@ -216,7 +191,6 @@ class BabboNatale(arcade.Window):
         # Gestione collisioni
         collisioni = arcade.check_for_collision_with_list(self.babbo, self.lista_cookie)        
         if len(collisioni) > 0: # Vuol dire che il personaggio si è scontrato con qualcosa
-            #self.sound_player = arcade.play_sound(self.suono_munch)
             if self.sound_player == None:
                 self.sound_player = arcade.play_sound(self.suono_munch)
             else:    
