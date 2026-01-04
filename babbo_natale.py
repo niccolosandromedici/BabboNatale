@@ -45,6 +45,7 @@ class BabboNatale(arcade.Window):
 
 
 
+
     def __init__(self, larghezza, altezza, titolo):
         super().__init__(larghezza, altezza, titolo)
         self.babbo = None
@@ -53,7 +54,7 @@ class BabboNatale(arcade.Window):
         self.lista_babbo = arcade.SpriteList()
         self.lista_cookie = arcade.SpriteList()
         self.suono_munch = arcade.load_sound("./assets/munch.mp3")
-        self.lista_Golden_cookie = arcade.SpriteList()
+        #self.Golden_cookie = arcade.SpriteList()
         
 
         self.i = 0  # punteggio
@@ -82,9 +83,11 @@ class BabboNatale(arcade.Window):
         self.babbo.center_y = BabboNatale.SCREEN_HEIGHT // 2
         self.babbo.scale = 1.0
         self.lista_babbo.append(self.babbo)
-        
-        self.crea_cookie()
-       
+
+        self.crea_cookie(tipo = "normal")
+        self.crea_cookie(tipo = "golden")
+
+
 
         self.background = arcade.load_texture("assets/chalet.jpg")
 
@@ -98,9 +101,9 @@ class BabboNatale(arcade.Window):
             anchor_x = "center" # Allinea il testo al centro
         )
 
-    def crea_cookie(self):
+    def crea_cookie(self, tipo):
 
-        #print("[" + str(self.i) + "] == > Creazione cookie...")
+        print("[" + str(self.i) + "][" + tipo + "] == > Creazione cookie...")
 
 
         next_x = self.babbo.center_x
@@ -116,33 +119,45 @@ class BabboNatale(arcade.Window):
         
         #print("[",self.babbo.center_x,"][", self.babbo.center_y,"] = > Cookie creato in: [",next_x, "] [", next_y, "]")
 
-        self.cookie = arcade.Sprite("./assets/cookie.png")
+        if tipo == "normal":
+            self.cookie = arcade.Sprite("./assets/cookie.png")
         
-        self.cookie.center_x = next_x
-        self.cookie.center_y = next_y
-        self.cookie.scale = 0.2
+            self.cookie.center_x = next_x
+            self.cookie.center_y = next_y
+            self.cookie.scale = 0.2
+            self.cookie.tipo = "normal"
+            self.lista_cookie.append(self.cookie)
 
-        self.lista_cookie.append(self.cookie)
-
-    def crea_golden_cookie(self):
-        next_gx = self.babbo.center_x
-
-        while abs(next_gx - self.babbo.center_x) < 100 :
-            next_gx = (BabboNatale.GOLDEN_COOKIE_WIDTH/2) + (self.babbo.center_x + random.randint(100, (BabboNatale.SCREEN_WIDTH - BabboNatale.GOLDEN_COOKIE_WIDTH)))%(BabboNatale.SCREEN_WIDTH - BabboNatale.GOLDEN_COOKIE_WIDTH)
-
-
-        next_gy = self.babbo.center_y
-
-        while abs(next_gy - self.babbo.center_y) < 100 :
-            next_gy = (BabboNatale.GOLDEN_COOKIE_HEIGHT/2) + (self.babbo.center_y + random.randint(100, (BabboNatale.SCREEN_HEIGHT - BabboNatale.GOLDEN_COOKIE_HEIGHT)))%(BabboNatale.SCREEN_HEIGHT - BabboNatale.GOLDEN_COOKIE_HEIGHT)
+        elif tipo == "golden":
+            self.cookie = arcade.Sprite("./assets/golden_cookie.png")
         
-        #print("[",self.babbo.center_x,"][", self.babbo.center_y,"] = > Cookie creato in: [",next_x, "] [", next_y, "]")
+            self.cookie.center_x = next_x
+            self.cookie.center_y = next_y
+            self.cookie.scale = 0.2
+            self.cookie.tipo = "golden"
+            self.lista_cookie.append(self.cookie)
 
-        self.Golden_cookie = arcade.Sprite("./assets/golden_cookie.png")
+    # def crea_golden_cookie(self):
+    #     next_gx = self.babbo.center_x
+
+    #     while abs(next_gx - self.babbo.center_x) < 100 :
+    #         next_gx = (BabboNatale.GOLDEN_COOKIE_WIDTH/2) + (self.babbo.center_x + random.randint(100, (BabboNatale.SCREEN_WIDTH - BabboNatale.GOLDEN_COOKIE_WIDTH)))%(BabboNatale.SCREEN_WIDTH - BabboNatale.GOLDEN_COOKIE_WIDTH)
+
+
+    #     next_gy = self.babbo.center_y
+
+    #     while abs(next_gy - self.babbo.center_y) < 100 :
+    #         next_gy = (BabboNatale.GOLDEN_COOKIE_HEIGHT/2) + (self.babbo.center_y + random.randint(100, (BabboNatale.SCREEN_HEIGHT - BabboNatale.GOLDEN_COOKIE_HEIGHT)))%(BabboNatale.SCREEN_HEIGHT - BabboNatale.GOLDEN_COOKIE_HEIGHT)
         
-        self.Golden_cookie.center_x = next_gx
-        self.Golden_cookie.center_y = next_gy
-        self.Golden_cookie.scale = 0.1
+    #     #print("[",self.babbo.center_x,"][", self.babbo.center_y,"] = > Cookie creato in: [",next_x, "] [", next_y, "]")
+
+    #     self.Golden_cookie = arcade.Sprite("./assets/golden_cookie.png")
+        
+    #     self.Golden_cookie.center_x = next_gx
+    #     self.Golden_cookie.center_y = next_gy
+    #     self.Golden_cookie.scale = 0.2
+    #     self.Golden_cookie.tipo = "golden"
+    #     self.lista_cookie.append(self.Golden_cookie)
 
 
         
@@ -155,7 +170,6 @@ class BabboNatale(arcade.Window):
         #arcade.draw_texture_rect(self.background, arcade.LBWH( 0, 0, 300, 168) )
         arcade.draw_texture_rect(self.background, arcade.types.Viewport( 0, 0, BabboNatale.SCREEN_WIDTH, BabboNatale.SCREEN_HEIGHT) )
         self.lista_cookie.draw()
-        self.lista_Golden_cookie.draw()
         self.lista_babbo.draw()
         self.testo_score.draw()
         
@@ -200,32 +214,36 @@ class BabboNatale(arcade.Window):
             self.babbo.center_y = self.height
         
         # Gestione collisioni
-        collisioni = arcade.check_for_collision_with_list(self.babbo, self.lista_cookie, self.lista_Golden_cookie)
-        
+        collisioni = arcade.check_for_collision_with_list(self.babbo, self.lista_cookie)        
         if len(collisioni) > 0: # Vuol dire che il personaggio si è scontrato con qualcosa
             #self.sound_player = arcade.play_sound(self.suono_munch)
             if self.sound_player == None:
                 self.sound_player = arcade.play_sound(self.suono_munch)
             else:    
                 arcade.sound.play_sound( self.suono_munch, volume=self.suono_munch.get_volume(self.sound_player) )
-            
-            for cookie in collisioni:
+
+            if collisioni[0].tipo == "normal":
                 self.i += 1
                 self.testo_score.text = f"Punteggio: {self.i}"
-                cookie.remove_from_sprite_lists()
-            for Golden_cookie in collisioni:
+                collisioni[0].remove_from_sprite_lists()
+                print("Biscotto mangiato! Punteggio:", self.i)
+
+            elif collisioni[0].tipo == "golden":
                 self.i += 100
                 self.testo_score.text = f"Punteggio: {self.i}"
-                Golden_cookie.remove_from_sprite_lists()
+                collisioni[0].remove_from_sprite_lists()
+                print("Golden Biscotto mangiato! Punteggio:", self.i)
+            # Creazione nuovi biscotti in base al punteggio
             self.crea_biscotti()
+                
             
        
     def crea_biscotti(self):
         #print("chiamato crea biscotti")      
         x = 1 + (self.i // 5)
         while x > 0:
-            #print("dentro il while")
-            self.crea_cookie()
+            print("dentro il while")
+            self.crea_cookie(tipo = "normal")
             x -= 1
 
 
