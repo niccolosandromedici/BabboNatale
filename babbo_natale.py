@@ -270,7 +270,6 @@ class BabboNatale(arcade.Window):
 
     
 
-
     def aggiorna_punteggio(self, nuovo_punteggio):
         self.testo_score.text = f"Punteggio: {self.i}"
 
