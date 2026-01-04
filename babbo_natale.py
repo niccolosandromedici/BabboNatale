@@ -37,6 +37,8 @@ class BabboNatale(arcade.Window):
 
     COOKIE_HEIGHT = 32
     COOKIE_WIDTH = 32
+    GOLDEN_COOKIE_HEIGHT = 32
+    GOLDEN_COOKIE_WIDTH = 32
     SCREEN_HEIGHT = 600
     SCREEN_WIDTH = 900
     sound_player = None
@@ -47,9 +49,11 @@ class BabboNatale(arcade.Window):
         super().__init__(larghezza, altezza, titolo)
         self.babbo = None
         self.cookie = None
+        self.Golden_cookie = None
         self.lista_babbo = arcade.SpriteList()
         self.lista_cookie = arcade.SpriteList()
         self.suono_munch = arcade.load_sound("./assets/munch.mp3")
+        self.lista_Golden_cookie = arcade.SpriteList()
         
 
         self.i = 0  # punteggio
@@ -80,6 +84,7 @@ class BabboNatale(arcade.Window):
         self.lista_babbo.append(self.babbo)
         
         self.crea_cookie()
+       
 
         self.background = arcade.load_texture("assets/chalet.jpg")
 
@@ -119,6 +124,27 @@ class BabboNatale(arcade.Window):
 
         self.lista_cookie.append(self.cookie)
 
+    def crea_golden_cookie(self):
+        next_gx = self.babbo.center_x
+
+        while abs(next_gx - self.babbo.center_x) < 100 :
+            next_gx = (BabboNatale.GOLDEN_COOKIE_WIDTH/2) + (self.babbo.center_x + random.randint(100, (BabboNatale.SCREEN_WIDTH - BabboNatale.GOLDEN_COOKIE_WIDTH)))%(BabboNatale.SCREEN_WIDTH - BabboNatale.GOLDEN_COOKIE_WIDTH)
+
+
+        next_gy = self.babbo.center_y
+
+        while abs(next_gy - self.babbo.center_y) < 100 :
+            next_gy = (BabboNatale.GOLDEN_COOKIE_HEIGHT/2) + (self.babbo.center_y + random.randint(100, (BabboNatale.SCREEN_HEIGHT - BabboNatale.GOLDEN_COOKIE_HEIGHT)))%(BabboNatale.SCREEN_HEIGHT - BabboNatale.GOLDEN_COOKIE_HEIGHT)
+        
+        #print("[",self.babbo.center_x,"][", self.babbo.center_y,"] = > Cookie creato in: [",next_x, "] [", next_y, "]")
+
+        self.Golden_cookie = arcade.Sprite("./assets/golden_cookie.png")
+        
+        self.Golden_cookie.center_x = next_gx
+        self.Golden_cookie.center_y = next_gy
+        self.Golden_cookie.scale = 0.1
+
+
         
 
     
@@ -129,6 +155,7 @@ class BabboNatale(arcade.Window):
         #arcade.draw_texture_rect(self.background, arcade.LBWH( 0, 0, 300, 168) )
         arcade.draw_texture_rect(self.background, arcade.types.Viewport( 0, 0, BabboNatale.SCREEN_WIDTH, BabboNatale.SCREEN_HEIGHT) )
         self.lista_cookie.draw()
+        self.lista_Golden_cookie.draw()
         self.lista_babbo.draw()
         self.testo_score.draw()
         
@@ -173,7 +200,7 @@ class BabboNatale(arcade.Window):
             self.babbo.center_y = self.height
         
         # Gestione collisioni
-        collisioni = arcade.check_for_collision_with_list(self.babbo, self.lista_cookie)
+        collisioni = arcade.check_for_collision_with_list(self.babbo, self.lista_cookie, self.lista_Golden_cookie)
         
         if len(collisioni) > 0: # Vuol dire che il personaggio si è scontrato con qualcosa
             #self.sound_player = arcade.play_sound(self.suono_munch)
@@ -186,6 +213,10 @@ class BabboNatale(arcade.Window):
                 self.i += 1
                 self.testo_score.text = f"Punteggio: {self.i}"
                 cookie.remove_from_sprite_lists()
+            for Golden_cookie in collisioni:
+                self.i += 100
+                self.testo_score.text = f"Punteggio: {self.i}"
+                Golden_cookie.remove_from_sprite_lists()
             self.crea_biscotti()
             
        
