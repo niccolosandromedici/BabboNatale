@@ -9,8 +9,8 @@ import os
 """
 Compiti per casa: La scorpacciata di Babbo Natale
 Dato questo giochino come partenza, aggiungere le seguenti modifiche:
-1 - Scaricare, disegnare o generare con AI un'immagine di sfondo
-     e mostrarla poi come background                                                            #fatto
+1 - Scaricare, disegnare o generare con AI un'immagine di sfondo                                #fatto
+     e mostrarla poi come background                                                            
 2 - Premendo il tasto "M", il suono verrà mutato. Premendolo di nuovo                           #fatto
      il suono deve tornare. Avete due possibilità: o evitate proprio
      di far partire il suono, o vi guardate come funziona play_sound
@@ -24,7 +24,7 @@ Dato questo giochino come partenza, aggiungere le seguenti modifiche:
     in  poi verranno creati 2 biscotti per volta. Dopo averne mangiati
     altri 5, vengono creati 3 biscotti per volta, poi 4, e via dicendo
 
-7 - (Opzionale) Ogni volta che genero un biscotto, al 3% di possibilità potrebbe essere un      #bisogna fare pulizia nel codice
+7 - (Opzionale) Ogni volta che genero un biscotto, al 3% di possibilità potrebbe essere un      #fatto
          "golden cookie". Il golden cookie rimane solo 3 secondi sullo schermo
         ma vale 100 punti. 
 
@@ -269,6 +269,7 @@ class BabboNatale(arcade.Window):
 
 
     
+
 
     def aggiorna_punteggio(self, nuovo_punteggio):
         self.testo_score.text = f"Punteggio: {self.i}"
