@@ -1,3 +1,5 @@
+#from timeit import Timer
+from threading import Timer
 import arcade
 import random
 import os
@@ -32,6 +34,8 @@ Dato questo giochino come partenza, aggiungere le seguenti modifiche:
 
 Fate questo esercizio in una repository su git e mandate il link al vostro account sul form
 """
+
+
 class BabboNatale(arcade.Window):
 
 
@@ -42,6 +46,7 @@ class BabboNatale(arcade.Window):
     SCREEN_HEIGHT = 600
     SCREEN_WIDTH = 900
     sound_player = None
+    TIMER_GOLDEN_COOKIE_SHOW = 3.0  # secondi
 
 
 
@@ -49,8 +54,8 @@ class BabboNatale(arcade.Window):
     def __init__(self, larghezza, altezza, titolo):
         super().__init__(larghezza, altezza, titolo)
         self.babbo = None
-        self.cookie = None
-        self.Golden_cookie = None
+        #self.cookie = None
+        #self.Golden_cookie = None
         self.lista_babbo = arcade.SpriteList()
         self.lista_cookie = arcade.SpriteList()
         self.suono_munch = arcade.load_sound("./assets/munch.mp3")
@@ -85,7 +90,7 @@ class BabboNatale(arcade.Window):
         self.lista_babbo.append(self.babbo)
 
         self.crea_cookie(tipo = "normal")
-        self.crea_cookie(tipo = "golden")
+        
 
 
 
@@ -120,25 +125,32 @@ class BabboNatale(arcade.Window):
         #print("[",self.babbo.center_x,"][", self.babbo.center_y,"] = > Cookie creato in: [",next_x, "] [", next_y, "]")
 
         if tipo == "normal":
-            self.cookie = arcade.Sprite("./assets/cookie.png")
+            cookie = arcade.Sprite("./assets/cookie.png")
         
-            self.cookie.center_x = next_x
-            self.cookie.center_y = next_y
-            self.cookie.scale = 0.2
-            self.cookie.tipo = "normal"
-            self.lista_cookie.append(self.cookie)
+            cookie.center_x = next_x
+            cookie.center_y = next_y
+            cookie.scale = 0.2
+            cookie.tipo = "normal"
+            self.lista_cookie.append(cookie)
 
         elif tipo == "golden":
-            self.cookie = arcade.Sprite("./assets/golden_cookie.png")
+            cookie = arcade.Sprite("./assets/golden_cookie.png")
         
-            self.cookie.center_x = next_x
-            self.cookie.center_y = next_y
-            self.cookie.scale = 0.2
-            self.cookie.tipo = "golden"
-            self.lista_cookie.append(self.cookie)
+            cookie.center_x = next_x
+            cookie.center_y = next_y
+            cookie.scale = 0.2
+            cookie.tipo = "golden"
+            cookie.golden_timer = Timer(BabboNatale.TIMER_GOLDEN_COOKIE_SHOW, self.rimuovi_golden_cookie, [cookie])
+            cookie.golden_timer.start()
+            self.lista_cookie.append(cookie)
+
+    def rimuovi_golden_cookie(self, Sprite_cookie):
+        Sprite_cookie.remove_from_sprite_lists()
+        #print("Golden Cookie scomparso!")
+
+
 
     
-
         
     
     def on_draw(self):
@@ -200,13 +212,13 @@ class BabboNatale(arcade.Window):
                 self.i += 1
                 self.testo_score.text = f"Punteggio: {self.i}"
                 collisioni[0].remove_from_sprite_lists()
-                print("Biscotto mangiato! Punteggio:", self.i)
+                #print("Biscotto mangiato! Punteggio:", self.i)
 
             elif collisioni[0].tipo == "golden":
                 self.i += 100
                 self.testo_score.text = f"Punteggio: {self.i}"
                 collisioni[0].remove_from_sprite_lists()
-                print("Golden Biscotto mangiato! Punteggio:", self.i)
+                #print("Golden Biscotto mangiato! Punteggio:", self.i)
             # Creazione nuovi biscotti in base al punteggio
             self.crea_biscotti()
                 
@@ -216,10 +228,15 @@ class BabboNatale(arcade.Window):
         #print("chiamato crea biscotti")      
         x = 1 + (self.i // 5)
         while x > 0:
-            print("dentro il while")
-            self.crea_cookie(tipo = "normal")
+            #print("dentro il while")
+            if self.mostra_golden_cookie():
+                self.crea_cookie(tipo = "golden")
+            else:
+                self.crea_cookie(tipo = "normal")
             x -= 1
 
+    def mostra_golden_cookie(self):
+        return random.randint(1, 100) <= 3
 
     def on_key_press(self, tasto, modificatori):
         if tasto in (arcade.key.UP, arcade.key.W):
