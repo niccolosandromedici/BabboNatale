@@ -47,6 +47,7 @@ class BabboNatale(arcade.Window):
     SCREEN_WIDTH = 900
     sound_player = None
     TIMER_GOLDEN_COOKIE_SHOW = 3.0  # secondi
+    TIMER_COOKIE_SHOW = 7.5  # secondi
 
 
 
@@ -62,7 +63,7 @@ class BabboNatale(arcade.Window):
         
         
 
-        self.i = 0  # punteggio
+        self.conta_biscotti_mangiati = 0  # punteggio
 
         file_path = os.path.dirname(os.path.abspath(__file__))
         os.chdir(file_path)
@@ -97,7 +98,7 @@ class BabboNatale(arcade.Window):
         self.background = arcade.load_texture("assets/chalet.jpg")
 
         self.testo_score = arcade.Text( #testo del punteggio
-            text="Punteggio: " + str(self.i),
+            text="Punteggio: " + str(self.conta_biscotti_mangiati),
             x = BabboNatale.SCREEN_WIDTH // 2, # Centro dello schermo
             y = BabboNatale.SCREEN_HEIGHT - 50, # Vicino in alto
             color = arcade.color.WHITE,
@@ -108,7 +109,7 @@ class BabboNatale(arcade.Window):
 
     def crea_cookie(self, tipo):
 
-        #print("[" + str(self.i) + "][" + tipo + "] == > Creazione cookie...")
+        #print("[" + str(self.conta_biscotti_mangiati) + "][" + tipo + "] == > Creazione cookie...")
 
 
         next_x = self.babbo.center_x
@@ -131,6 +132,8 @@ class BabboNatale(arcade.Window):
             cookie.center_y = next_y
             cookie.scale = 0.2
             cookie.tipo = "normal"
+            cookie.timer = Timer(BabboNatale.TIMER_COOKIE_SHOW, self.rimuovi_cookie, [cookie])
+            cookie.timer.start()
             self.lista_cookie.append(cookie)
 
         elif tipo == "golden":
@@ -147,6 +150,10 @@ class BabboNatale(arcade.Window):
     def rimuovi_golden_cookie(self, Sprite_cookie):
         Sprite_cookie.remove_from_sprite_lists()
         #print("Golden Cookie scomparso!")
+
+    def rimuovi_cookie(self, Sprite_cookie):
+        Sprite_cookie.remove_from_sprite_lists()
+        #print("Cookie scomparso!")
 
 
 
@@ -209,16 +216,16 @@ class BabboNatale(arcade.Window):
                 arcade.sound.play_sound( self.suono_munch, volume=self.suono_munch.get_volume(self.sound_player) )
 
             if collisioni[0].tipo == "normal":
-                self.i += 1
-                self.testo_score.text = f"Punteggio: {self.i}"
+                self.conta_biscotti_mangiati += 1
+                self.testo_score.text = f"Punteggio: {self.conta_biscotti_mangiati}"
                 collisioni[0].remove_from_sprite_lists()
-                #print("Biscotto mangiato! Punteggio:", self.i)
+                #print("Biscotto mangiato! Punteggio:", self.conta_biscotti_mangiati)
 
             elif collisioni[0].tipo == "golden":
-                self.i += 100
-                self.testo_score.text = f"Punteggio: {self.i}"
+                self.conta_biscotti_mangiati += 100
+                self.testo_score.text = f"Punteggio: {self.conta_biscotti_mangiati}"
                 collisioni[0].remove_from_sprite_lists()
-                #print("Golden Biscotto mangiato! Punteggio:", self.i)
+                #print("Golden Biscotto mangiato! Punteggio:", self.conta_biscotti_mangiati)
             # Creazione nuovi biscotti in base al punteggio
             self.crea_biscotti()
                 
@@ -226,7 +233,7 @@ class BabboNatale(arcade.Window):
        
     def crea_biscotti(self):
         #print("chiamato crea biscotti")      
-        x = 1 + (self.i // 5)
+        x = 1 + (self.conta_biscotti_mangiati // 5)
         while x > 0:
             #print("dentro il while")
             if self.mostra_golden_cookie():
@@ -272,7 +279,7 @@ class BabboNatale(arcade.Window):
 
 
     def aggiorna_punteggio(self, nuovo_punteggio):
-        self.testo_score.text = f"Punteggio: {self.i}"
+        self.testo_score.text = f"Punteggio: {self.conta_biscotti_mangiati}"
 
 def main():
     gioco = BabboNatale(BabboNatale.SCREEN_WIDTH, BabboNatale.SCREEN_HEIGHT, "Babbo Natale")
