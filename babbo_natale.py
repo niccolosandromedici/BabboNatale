@@ -95,7 +95,7 @@ class BabboNatale(arcade.Window):
 
 
 
-        self.background = arcade.load_texture("assets/chalet.jpg")
+        self.background = arcade.load_texture("assets/Immagine_rovagnenim.jpg")
 
         self.testo_score = arcade.Text( #testo del punteggio
             text="Punteggio: " + str(self.conta_biscotti_mangiati),
