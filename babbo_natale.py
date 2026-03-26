@@ -162,7 +162,7 @@ class BabboNatale(arcade.Window):
     
     def on_draw(self):
         self.clear()
-        arcade.draw_texture_rect(self.background, arcade.types.Viewport( 0, 0, BabboNatale.SCREEN_WIDTH, BabboNatale.SCREEN_HEIGHT) )
+        arcade.draw_texture_rect(self.background, arcade.types.Viewport( 0, 0, BabboNatale.SCREEN_WIDTH, BabboNatale.SCREEN_HEIGHT))
         self.lista_cookie.draw()
         self.lista_babbo.draw()
         self.testo_score.draw()
